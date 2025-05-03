@@ -22,6 +22,10 @@ function deriveActivePlayer(gameTurns: any){
 }
 
 function App() {
+  const [players , setPlayers]:any =useState({
+    'X':'Player 1',
+    'O':'Player 2'
+  });
  const [gameTurns , setGameTurns]=useState<any[]>([]);
  let currentPlayer = deriveActivePlayer(gameTurns);
  let gameBoard = [...initialGameBoard.map((arr: any) => [...arr])];
@@ -38,7 +42,7 @@ function App() {
   const thirdSquareSymbol=gameBoard[combination[2].row][combination[2].col];
 
   if(firstSquareSymbol && firstSquareSymbol=== secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol){
-    winner= firstSquareSymbol;
+    winner= players[firstSquareSymbol];
   }
  }
 
@@ -56,6 +60,15 @@ function App() {
  function handleRematch(){
   setGameTurns([]);
  }
+
+ function handlePlayerNameChange(symbol: any , newName: any){
+  setPlayers((prevPlayers: any) => {
+    return {
+      ...prevPlayers,
+      [symbol]: newName
+    }; 
+  })
+ }
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 py-10 px-4">
       <h1 className="text-4xl font-bold text-center mb-6 text-yellow-600">
@@ -69,9 +82,9 @@ function App() {
       <main className='bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-auto mt-10'>
         <div className='flex justify-center'>
           <ol className="flex space-x-8 text-lg font-semibold text-gray-800">
-            <Player name="Player 1" symbol="X" isPlayerActive = {currentPlayer==='X'}></Player>
+            <Player name="Player 1" symbol="X" isPlayerActive = {currentPlayer==='X'} onChangeName={handlePlayerNameChange}></Player>
             <Player name= "Player 2" symbol="O" isPlayerActive ={
-              currentPlayer==='O'}></Player>
+              currentPlayer==='O'} onChangeName = {handlePlayerNameChange}></Player>
           </ol>
         </div>
         <div className="relative mt-6">
